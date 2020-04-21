@@ -1,59 +1,89 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div id="hello-world">
+    <nav>
+      <p>ToDoList</p>
+      <input
+        type="text"
+        v-model="message"
+        placeholder="添加ToDo"
+        :title="message.length > 0 ? '':title"
+        @keydown.enter="add"
+      />
+    </nav>
+    <div class="content">
+      <un-finish></un-finish>
+      <hr />
+      <finish></finish>
+    </div>
+    <footer>
+      <p>Copyright © 2014 todolist.cn clear</p>
+    </footer>
   </div>
 </template>
 
 <script>
+import Finish from "./Finish";
+import UnFinish from "./UnFinish";
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: "HelloWorld",
+  data() {
+    return {
+      message: "",
+      title: "请填写此字段"
+    };
+  },
+  components: {
+    Finish,
+    UnFinish
+  },
+  methods: {
+    add() {
+      var obj = {
+        message: this.message,
+        isFinish: false,
+      };
+      this.$store.commit("add", obj);
+      this.message = "";
+      // console.log(this.$store.state.list)
+    }
   }
-}
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
+* {
+  margin: 0;
   padding: 0;
+  list-style: none;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+nav {
+  width: 100%;
+  height: 64px;
+  line-height: 64px;
+  background-color: rgb(50, 50, 50);
+  display: flex;
+  justify-content: space-around;
 }
-a {
-  color: #42b983;
+nav p {
+  float: left;
+  color: #fff;
+  font-size: 25px;
+}
+nav input {
+  width: 400px;
+  height: 30px;
+  margin-top: 17px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding-left: 10px;
+}
+footer {
+  padding: 15px;
+  text-align: center;
+}
+footer p {
+  color: #666666;
 }
 </style>
