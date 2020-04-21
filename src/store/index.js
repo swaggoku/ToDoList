@@ -17,7 +17,6 @@ export default new Vuex.Store({
       sessionStorage.setItem('id', state.id);
     },
     del(state, id) {
-      // state.list.splice(a, 1)
       state.list.forEach((elem, index, arr) => {
         if (elem.id == id) {
           arr.splice(index, 1);

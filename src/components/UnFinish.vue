@@ -17,28 +17,26 @@
 <script>
 export default {
   name: "UnFinish",
-  data() {
-    return {
-      message: ""
-    };
+  computed: {
+    // 获取vuex里的getters计算属性
+    getUnFinish() {
+      return this.$store.getters.getUnFinish;
+    }
   },
   methods: {
-    del(id) {
-      this.$store.commit("del", id);
-    },
+    // 修改状态
     change(e,id) {
       var obj = {
         check: e.target.checked,
         id: id
       };
       this.$store.commit("change", obj);
+    },
+    // 删除
+    del(id) {
+      this.$store.commit("del", id);
     }
   },
-  computed: {
-    getUnFinish() {
-      return this.$store.getters.getUnFinish;
-    }
-  }
 };
 </script>
 

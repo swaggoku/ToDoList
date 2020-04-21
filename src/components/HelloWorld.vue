@@ -38,6 +38,7 @@ export default {
     UnFinish
   },
   methods: {
+    // 添加信息到vuex的list数组
     add() {
       var obj = {
         message: this.message,

@@ -17,12 +17,14 @@
 <script>
 export default {
   name: "Finish",
-  data() {
-    return {
-      message: ""
-    };
+  computed: {
+    // 获取vuex里的getters计算属性
+    getFinish() {
+      return this.$store.getters.getFinish;
+    }
   },
   methods: {
+    // 修改状态
     change(e, id) {
       var obj = {
         check: e.target.checked,
@@ -30,15 +32,11 @@ export default {
       };
       this.$store.commit("change", obj);
     },
+    // 删除
     del(id) {
       this.$store.commit("del", id);
     }
   },
-  computed: {
-    getFinish() {
-      return this.$store.getters.getFinish;
-    }
-  }
 };
 </script>
 
