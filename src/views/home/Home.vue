@@ -9,6 +9,8 @@
         :title="message.length > 0 ? '':title"
         @keydown.enter="add"
       />
+      <a href>欢迎{{getUname}}</a>
+      <a href @click.prevent="out">注销</a>
     </nav>
     <div class="content">
       <un-finish></un-finish>
@@ -42,11 +44,22 @@ export default {
     add() {
       var obj = {
         message: this.message,
-        isFinish: false,
+        isFinish: false
       };
       this.$store.commit("add", obj);
       this.message = "";
       // console.log(this.$store.state.list)
+    },
+    // 退出用户
+    out() {
+      this.$store.dispatch("logOut").then(res => {
+        this.$router.push("/");
+      });
+    }
+  },
+  computed: {
+    getUname() {
+      return this.$store.state.uname;
     }
   }
 };
@@ -74,6 +87,10 @@ nav input {
   border: none;
   outline: none;
   padding-left: 10px;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
 }
 footer {
   padding: 15px;

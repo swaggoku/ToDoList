@@ -46,6 +46,15 @@ export default new Vuex.Store({
       // 保存到sessionStorage
       sessionStorage.setItem('token', a.code);
       sessionStorage.setItem('uname', a.message);
+    },
+    // 退出(清空信息)
+    clearToken(state) {
+      state.token = "";
+      state.uname = "";
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('uname');
+      sessionStorage.removeItem('list');
+      sessionStorage.removeItem('id');
     }
   },
   getters: {
@@ -66,20 +75,34 @@ export default new Vuex.Store({
   },
   // 网络请求(进行异步操作)
   actions: {
+    // 登录
     login(store, a) {
       var params = "type=text&count=5&page=1";
       // promise 避免回调地狱
       return new Promise((callback) => {
         axios.post("/getJoke", params).then(res => {
           console.log(res.data);
-          if (res.data.code == 300) {
+          if (res.data.code == 200) {
             // 把请求的数据发送到mutations方法里
             store.commit('setInfo', res.data);
             callback();
           } else {
             alert('登录失败');
           }
-
+        })
+      })
+    },
+    // 退出
+    logOut(store) {
+      var info = "token=" + sessionStorage.getItem('token');
+      return new Promise((callback) => {
+        axios.post("/getJoke", info).then(res => {
+          if (res.data.code == 200) {
+            store.commit('clearToken');
+            callback();
+          } else {
+            alert('退出失败');
+          }
         })
       })
     }

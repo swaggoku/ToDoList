@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       uname: "",
-      pwd: "",
+      pwd: ""
     };
   },
   methods: {
@@ -37,8 +37,8 @@ export default {
       };
       this.$store.dispatch("login", obj).then(res => {
         // 登录成功 跳转首页
-        this.$router.push('/')
-      })  
+        this.$router.push("/home");
+      });
     }
   },
   computed: {
@@ -46,7 +46,7 @@ export default {
     getUname() {
       return this.$store.state.uname;
     }
-  },
+  }
 };
 </script>
 
