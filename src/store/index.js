@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
+
+axios.defaults.baseURL = "https://api.apiopen.top";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     list: JSON.parse(sessionStorage.getItem('list')) || [],
-    id: sessionStorage.getItem('id') || 1
+    id: sessionStorage.getItem('id') || 1,
+    token: sessionStorage.getItem('token') || '',
+    uname: sessionStorage.getItem('uname') || ''
   },
   mutations: {
     add(state, a) {
@@ -33,6 +38,14 @@ export default new Vuex.Store({
       })
       // console.log(a.check)
       sessionStorage.setItem("list", JSON.stringify(state.list));
+    },
+    setInfo(state, a) {
+      // 保存到仓库state
+      state.token = a.code;
+      state.uname = a.message;
+      // 保存到sessionStorage
+      sessionStorage.setItem('token', a.code);
+      sessionStorage.setItem('uname', a.message);
     }
   },
   getters: {
@@ -49,8 +62,27 @@ export default new Vuex.Store({
         return elem.isFinish == false;
       });
       return result;
+    },
+  },
+  // 网络请求(进行异步操作)
+  actions: {
+    login(store, a) {
+      var params = "type=text&count=5&page=1";
+      // promise 避免回调地狱
+      return new Promise((callback) => {
+        axios.post("/getJoke", params).then(res => {
+          console.log(res.data);
+          if (res.data.code == 300) {
+            // 把请求的数据发送到mutations方法里
+            store.commit('setInfo', res.data);
+            callback();
+          } else {
+            alert('登录失败');
+          }
+
+        })
+      })
     }
   },
-  actions: {},
   modules: {}
 })

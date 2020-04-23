@@ -1,22 +1,23 @@
 <template>
   <div id="app">
-    <hello-world></hello-world>
+    <!-- <home></home> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Home from "./views/home/Home";
+import Login from './views/login/Login';
+
 export default {
   name: "App",
   components: {
-    HelloWorld
+    Home,
+    Login
   }
 };
 </script>
 
 <style scoped>
-#app {
-  height: 1000px;
-  background-color: #cdcdcd;
-}
+
 </style>
