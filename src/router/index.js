@@ -1,16 +1,17 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
+import store from '../store'
 
 const Home = () => import('../views/home/Home.vue')
 const Login = () => import('../views/login/Login.vue')
 
 Vue.use(VueRouter);
 
-export default new VueRouter({
+const router =  new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/home'
     },
     {
       path: '/home',
@@ -25,3 +26,20 @@ export default new VueRouter({
   ],
   mode: 'history'
 })
+// 全局路由守卫
+router.beforeEach((to, from, next) => {
+  if(to.path == '/login') {
+    store.commit('clearToken');
+    next();
+  }else {
+    if(store.state.token) {
+      next();
+    }else {
+      store.dispatch('checkStatus').then(res => {
+        next();
+      })
+    }
+  }
+})
+
+export default router;

@@ -53,7 +53,7 @@ export default {
     // 退出用户
     out() {
       this.$store.dispatch("logOut").then(res => {
-        this.$router.push("/");
+        this.$router.push("/login");
       });
     }
   },

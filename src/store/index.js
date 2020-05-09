@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from '../router';
 
 axios.defaults.baseURL = "https://api.apiopen.top";
 
@@ -76,7 +77,7 @@ export default new Vuex.Store({
   // 网络请求(进行异步操作)
   actions: {
     // 登录
-    login(store, a) {
+    login(store) {
       var params = "type=text&count=5&page=1";
       // promise 避免回调地狱
       return new Promise((callback) => {
@@ -102,6 +103,20 @@ export default new Vuex.Store({
             callback();
           } else {
             alert('退出失败');
+          }
+        })
+      })
+    },
+    // 判断token值是否有效
+    checkStatus(store) {
+      var info = "token=" + sessionStorage.getItem('token');
+      return new Promise((callback) => {
+        axios.post("/getJoke", info).then(res => {
+          if (res.data.code == 200) {
+            callback();
+          } else {
+            store.commit('clearToken');
+            router.push('/login');
           }
         })
       })
